@@ -1,0 +1,11 @@
+{
+  "name": "e-tracking",
+  "version": "1.0.0",
+  "description": "an online document tracking system for the research and extension of DMMMSU - SLUC",
+  "main": "index.js",
+  "scripts": {
+    "watch": "sass --watch ./assets/scss:./assets/css"
+  },
+  "author": "",
+  "license": "ISC"
+}

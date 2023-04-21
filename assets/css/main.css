@@ -1,0 +1,191 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: #dfecfe;
+}
+
+main {
+  min-height: 100vh !important;
+}
+
+.page-heading {
+  color: #0a2c5e;
+}
+
+.home {
+  min-height: 100vh;
+}
+.home .card-link {
+  color: #03398a;
+  text-decoration: none;
+  text-align: center;
+}
+.home .card-link .card-button {
+  border: 1px solid #03398a;
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+}
+.home .card-link .card-button .card-body .card-icon {
+  width: 30%;
+}
+
+.dashboard .count-card {
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+}
+.dashboard .count-card .count-card-title {
+  font-size: 1rem;
+  margin: 0;
+  flex-grow: 1;
+}
+.dashboard .count-card .count {
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: bold;
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+.dashboard .card1 {
+  background-color: #ffe0b2;
+}
+.dashboard .card1 .title1 {
+  color: #e65100;
+}
+.dashboard .card1 .count1 {
+  background-color: #ff9800;
+}
+.dashboard .card2 {
+  background-color: #b3e5fc;
+}
+.dashboard .card2 .title2 {
+  color: #03a9f4;
+}
+.dashboard .card2 .count2 {
+  background-color: #0288d1;
+}
+.dashboard .card3 {
+  background-color: #c8e6c9;
+}
+.dashboard .card3 .title3 {
+  color: #388e3c;
+}
+.dashboard .card3 .count3 {
+  background-color: #4caf50;
+}
+
+.add-file header {
+  background-color: #333;
+  color: #fff;
+  height: 80px;
+}
+.add-file header img {
+  height: 50px;
+}
+.add-file .file-info {
+  border: 1px solid #ccc;
+}
+.add-file .timeline {
+  width: 70%;
+  position: relative;
+}
+.add-file .timeline .line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #ccc;
+  z-index: -1;
+}
+.add-file .timeline .status {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: #ffe4b5;
+  text-decoration: none;
+  color: #000;
+}
+.add-file .timeline .status.active {
+  background-color: #98fb98;
+}
+.add-file .timeline button.status {
+  border: none;
+}
+
+.notification-window .notification-list .notification-card {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.notification-window .notification-list .notification-card .notification-icon,
+.notification-window .notification-list .notification-card .notification-delete {
+  width: 30px;
+  height: 30px;
+}
+.notification-window .notification-list .notification-sent {
+  background-color: #ffe0b2;
+}
+.notification-window .notification-list .notification-sent .notification-message {
+  color: #e65100;
+}
+.notification-window .notification-list .notification-sent .notification-icon {
+  color: #ff9800;
+}
+.notification-window .notification-list .notification-signed {
+  background-color: #b3e5fc;
+}
+.notification-window .notification-list .notification-signed .notification-message {
+  color: #03a9f4;
+}
+.notification-window .notification-list .notification-signed .notification-icon {
+  color: #0288d1;
+}
+.notification-window .notification-list .notification-released {
+  background-color: #c8e6c9;
+}
+.notification-window .notification-list .notification-released .notification-message {
+  color: #388e3c;
+}
+.notification-window .notification-list .notification-released .notification-icon {
+  color: #4caf50;
+}
+.notification-window .notification-list .notification-received {
+  background-color: #f5f5f5;
+}
+.notification-window .notification-list .notification-received .notification-message {
+  color: #616161;
+}
+.notification-window .notification-list .notification-received .notification-icon {
+  color: #bdbdbd;
+}
+.notification-window .notification-list .notification-forwarded {
+  background-color: #f5f5f5;
+}
+.notification-window .notification-list .notification-forwarded .notification-message {
+  color: #616161;
+}
+.notification-window .notification-list .notification-forwarded .notification-icon {
+  color: #bdbdbd;
+}
+
+.profile .profile-info {
+  border: 1px solid #ccc;
+}
+
+/*# sourceMappingURL=main.css.map */
