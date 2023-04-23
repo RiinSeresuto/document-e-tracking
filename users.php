@@ -63,7 +63,6 @@ if(!isset($_SESSION['id'])){
                             <th scope="col">Position</th>
                             <th scope="col">Office</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Admin</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,7 +72,6 @@ if(!isset($_SESSION['id'])){
                                 <td><?php echo $user['position'] ?></td>
                                 <td><?php echo $user['office'] ?></td>
                                 <td><?php echo $user['email'] ?></td>
-                                <td>To be followed...</td>
                             </tr>
                         <?php endforeach;?>
                     </tbody>
