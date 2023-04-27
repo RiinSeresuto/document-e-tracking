@@ -87,15 +87,17 @@ if(!isset($_SESSION['id'])){
                                 <thead>
                                     <tr>
                                         <th scope="col">Date</th>
+                                        <th scope="col">Time</th>
                                         <th scope="col">Update</th>
                                         <th scope="col">From</th>
                                         <th scope="col">To</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach($logs as $log): ?>
+                                    <?php foreach($logs as $log):?>
                                         <tr>
                                             <td><?php echo date('F d, Y', strtotime($log['date'])); ?></td>
+                                            <td><?php echo date('h:ia', strtotime($log['date'])); ?></td>
                                             <td><?php echo $log['status'] ?></td>
                                             <td><?php echo $log['sender'] ?></td>
                                             <td><?php echo $log['receiver'] ?></td>

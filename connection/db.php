@@ -16,7 +16,7 @@ function makeid(){
 
 function current_time(){
     $timezone = date_default_timezone_get();
-    date_default_timezone_set($timezone);
+    date_default_timezone_set('Asia/Manila');
     $current_timestamp = time();
 
     return date("Y-m-d H:i:s",$current_timestamp);
