@@ -10,7 +10,7 @@ if(!isset($_SESSION['id'])){
 } else {
     $user_id = $_SESSION['id'];
 
-    $get_user_data = "SELECT `email`, `firstName`, `lastName`, `position`, `office` FROM `users` WHERE `id` = '$user_id'";
+    $get_user_data = "SELECT `email`, `position`, `office` FROM `users` WHERE `id` = '$user_id'";
     $result_user_data = mysqli_query($db, $get_user_data);
     $user_data = mysqli_fetch_assoc($result_user_data);
 }
@@ -36,7 +36,6 @@ if(!isset($_SESSION['id'])){
                 <h3 class="page-heading">PROFILE</h3>
 
                 <div class="profile-info my-4 p-4">
-                    <p class="mb-3"><strong>Name:</strong> <?php echo $user_data['firstName'] . " " . $user_data['lastName'] ?></p>
                     <p class="mb-3"><strong>Email:</strong> <?php echo $user_data['email'] ?></p>
                     <p class="mb-3"><strong>Position:</strong> <?php echo $user_data['position'] ?></p>
                     <p class="mb-0"><strong>Office:</strong> <?php echo $user_data['office'] ?></p>

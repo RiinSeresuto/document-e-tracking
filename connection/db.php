@@ -23,14 +23,12 @@ if(mysqli_num_rows($get_users_result) === 0){
     $first_user_id = makeid();
     $first_user_password = 'admin';
     $first_user_email = 'admin@mail.com';
-    $first_user_firstname = 'John';
-    $first_user_lastname = 'Doe';
     $first_user_position = 'Admin';
     $first_user_office = 'Admin';
 
     // Hash password using bcrypt
     $hashed_password = password_hash($first_user_password, PASSWORD_BCRYPT);
 
-    $add_first_user_query = "INSERT INTO `users`(`id`, `email`, `firstName`, `lastName`, `position`, `office`, `password`, `superAdmin`) VALUES ('$first_user_id','$first_user_email','$first_user_firstname','$first_user_lastname','$first_user_position','$first_user_office','$hashed_password','1')";
+    $add_first_user_query = "INSERT INTO `users`(`id`, `email`, `position`, `office`, `password`, `superAdmin`) VALUES ('$first_user_id','$first_user_email', '$first_user_position','$first_user_office','$hashed_password','1')";
     mysqli_query($db, $add_first_user_query);
 }

@@ -10,13 +10,11 @@ if(!isset($_SESSION['id'])){
 } else {
     $user_id = $_SESSION['id'];
 
-    $get_user_data = "SELECT `email`, `firstName`, `lastName`, `position`, `office`, `password` FROM `users` WHERE `id` = '$user_id'";
+    $get_user_data = "SELECT `email`, `position`, `office`, `password` FROM `users` WHERE `id` = '$user_id'";
     $result_user_data = mysqli_query($db, $get_user_data);
     $user_data = mysqli_fetch_assoc($result_user_data);
 
     if(isset($_POST['save'])){
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
         $email = $_POST['email'];
         $position = $_POST['position'];
         $office = $_POST['office'];
@@ -25,9 +23,9 @@ if(!isset($_SESSION['id'])){
             $password = $_POST['password'];
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-            $query_edit_profile = "UPDATE `users` SET `email`='$email',`firstName`='$firstname',`lastName`='$lastname',`position`='$position',`office`='$office',`password`='$hashed_password' WHERE `id` = '$user_id'";
+            $query_edit_profile = "UPDATE `users` SET `email`='$email',`position`='$position',`office`='$office',`password`='$hashed_password' WHERE `id` = '$user_id'";
         } else {
-            $query_edit_profile = "UPDATE `users` SET `email`='$email',`firstName`='$firstname',`lastName`='$lastname',`position`='$position',`office`='$office' WHERE `id` = '$user_id'";
+            $query_edit_profile = "UPDATE `users` SET `email`='$email',`position`='$position',`office`='$office' WHERE `id` = '$user_id'";
         }
 
         if(mysqli_query($db, $query_edit_profile)){
@@ -61,16 +59,6 @@ if(!isset($_SESSION['id'])){
                 <h3 class="page-heading">EDIT PROFILE</h3>
 
                 <form method="POST" class="profile-info my-4 p-4">
-                    <div class="mb-3 row">
-                        <div class="col">
-                            <label for="firstname" class="form-label">First Name</label>
-                            <input type="text" name="firstname" id="firstname" class="form-control" value="<?php echo $user_data['firstName'] ?>" />
-                        </div>
-                        <div class="col">
-                            <label for="lastname" class="form-label">Last Name</label>
-                            <input type="text" name="lastname" id="lastname" class="form-control" value="<?php echo $user_data['lastName'] ?>" />
-                        </div>
-                    </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" name="email" id="email" class="form-control" value="<?php echo $user_data['email'] ?>" />
