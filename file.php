@@ -142,6 +142,7 @@ if(!isset($_SESSION['id'])){
             </main>
             <?php include("./components/modals/endorsed-to.php"); ?>
             <?php include("./components/modals/modal-released.php"); ?>
+            <?php include("./components/modals/modal-returned.php"); ?>
         </div>
         <script src="./assets/js/bootstrap.bundle.min.js"></script>
     </body>
