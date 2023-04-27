@@ -14,6 +14,14 @@ function makeid(){
     return md5(uniqid(mt_rand(), true));
 }
 
+function current_time(){
+    $timezone = date_default_timezone_get();
+    date_default_timezone_set($timezone);
+    $current_timestamp = time();
+
+    return date("Y-m-d H:i:s",$current_timestamp);
+}
+
 //check the number of users in the database
 $get_users_query = "SELECT * FROM `users`";
 $get_users_result = mysqli_query($db, $get_users_query);

@@ -30,11 +30,9 @@ if(!isset($_SESSION['id'])){
     $result_receiver = mysqli_query($db, $query_receiver);
     $receiver = mysqli_fetch_assoc($result_receiver);
 
-    $query_logs = "SELECT `log`.`date`, `log`.`status`, `sender`.`office` as sender, `receiver`.`office` as receiver FROM `log` JOIN `users` AS sender ON `sender`.`id` = `log`.`updatedBy` JOIN `users` as receiver ON `receiver`.`id` = `log`.`forOffice` WHERE `log`.`documentID` = '$id' ORDER BY  `log`.`date` DESC";
+    $query_logs = "SELECT `log`.`date`, `log`.`status`, `sender`.`office` as sender, `receiver`.`office` as receiver FROM `log` LEFT JOIN `users` AS sender ON `sender`.`id` = `log`.`updatedBy` LEFT JOIN `users` as receiver ON `receiver`.`id` = `log`.`forOffice` WHERE `log`.`documentID` = '$id' ORDER BY  `log`.`date` DESC";
     $result_logs = mysqli_query($db, $query_logs);
     $logs = mysqli_fetch_all($result_logs, MYSQLI_ASSOC);
-
-    print_r($logs);
 }
 ?>
 
@@ -117,7 +115,7 @@ if(!isset($_SESSION['id'])){
                                 <a href="#" class="py-2 px-3 status active">Sent</a>
                                 
                                 <!-- RECEIVED -->
-                                <a href="#" class="py-2 px-3 status <?php if($document['isReceived']): echo "active"; endif; ?>">Received</a>
+                                <a href="./models/update/to-received.php?doc-id=<?php echo $id;?>&rec-id=<?php echo $sender_id?>" class="py-2 px-3 status <?php if($document['isReceived']): echo "active"; endif; ?>">Received</a>
                                 
                                 <!-- ENDORSED -->
                                 <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isEndorsed']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToForwarded">Endorsed</button>
