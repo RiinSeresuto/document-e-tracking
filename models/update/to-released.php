@@ -14,7 +14,7 @@ $log_id = makeid();
 $message = "released";
 $class = "notification-released";
 
-$query_to_release = "UPDATE `document` SET `status` = 'released', `dateUpdated` = '$timestamp', `isSent` = 1, `isReceived` = 1, `isEndorsed` = 1, `isReleased` = 1, `isReturned` = 0, `isSigned` = 0, `isApproved` = 0 WHERE `id` = '$document_id'";
+$query_to_release = "UPDATE `document` SET `status` = 'released', `forID` = '$forward_id', `dateUpdated` = '$timestamp', `isSent` = 1, `isReceived` = 1, `isEndorsed` = 1, `isReleased` = 1, `isReturned` = 0, `isSigned` = 0, `isApproved` = 0 WHERE `id` = '$document_id'";
 $query_release_receiver_notification = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$endorse_reciever_notification_id', '$sender_id', '$forward_id', '$message', '$document_id', '$class')";
 $query_file_uploader_notification = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$file_uploader_notification_id', '$sender_id', '$file_uploader_id', '$message', '$document_id', '$class')";
 $query_new_log = "INSERT INTO `log`(`id`, `documentID`, `date`, `status`, `updatedBy`, `forOffice`) VALUES ('$log_id','$document_id','$timestamp','released','$sender_id', '$forward_id')";
