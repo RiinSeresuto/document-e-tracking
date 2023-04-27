@@ -1,24 +1,33 @@
 <?php
 include("../../connection/db.php");
 
-$id = $_GET['doc-id'];
+$timestamp = current_time();
+$sender_id = $_SESSION['id'];
+$receiver_id = $_GET['rec-id'];
+$document_id = $_GET['doc-id'];
 
-$receiver_notification_id = $_GET['sender-id'];
-$sender_notification_id = $_SESSION['id'];
 $new_notification_id = makeid();
-$msg = "is approved";
+$message = "approved";
+$class = "notification-approved";
 
-$query_to_forward = "UPDATE `document` SET `status` = 'approved', `isReceived` = '1', `isForwarded` = '1', `isSigned` = '1', `isReleased` = '1', `isApproved` = '1' WHERE `document`.`id` = '$id'";
-$query_new_notifiation = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$new_notification_id','$sender_notification_id','$receiver_notification_id','$msg','$id','notification-forwarded')";
+$new_log_id = makeid();
 
-if(mysqli_query($db, $query_to_forward)){
-    if(mysqli_query($db, $query_new_notifiation)){
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-        exit;
+$query_to_received = "UPDATE `document` SET `status` = 'approved', `dateUpdated` = '$timestamp', `isSent` = 1, `isReceived` = 1, `isEndorsed` = 1, `isReleased` = 1, `isReturned` = 1, `isSigned` = 1, `isApproved` = 1 WHERE `id` = '$document_id'";
+$query_new_notification = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$new_notification_id', '$sender_id', '$receiver_id', '$message', '$document_id', '$class')";
+$query_new_log = "INSERT INTO `log`(`id`, `documentID`, `date`, `status`, `updatedBy`) VALUES ('$new_log_id','$document_id','$timestamp','approved','$sender_id')";
+
+if(mysqli_query($db, $query_to_received)){
+    if(mysqli_query($db, $query_new_notification)){
+        if(mysqli_query($db, $query_new_log)){
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit;
+        } else {
+            echo "log error: " . $db->error;
+        }
     } else {
-        echo "notification : " . $db->error;
+        echo "notification error: " . $db->error;
     }
 } else {
-    echo"update: " . $db->error;
+    echo "update error: " . $db->error;
 }
 ?>
