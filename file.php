@@ -123,10 +123,10 @@ if(!isset($_SESSION['id'])){
                                 <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isEndorsed']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToForwarded">Endorsed</button>
                                 
                                 <!-- RELEASED -->
-                                <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isReleased']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToForwarded">Released</button>
+                                <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isReleased']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToReleased">Released</button>
                                 
                                 <!-- RETURNED -->
-                                <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isReleased']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToForwarded">Returned</button>
+                                <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isReturned']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToReturned">Returned</button>
                                 
                                 <!-- SIGNED -->
                                 <a href="#" class="py-2 px-3 status <?php if($document['isSigned']): echo "active"; endif; ?>">Signed</a>
@@ -141,6 +141,7 @@ if(!isset($_SESSION['id'])){
                 </div>
             </main>
             <?php include("./components/modals/endorsed-to.php"); ?>
+            <?php include("./components/modals/modal-released.php"); ?>
         </div>
         <script src="./assets/js/bootstrap.bundle.min.js"></script>
     </body>

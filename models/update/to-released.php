@@ -1,25 +1,47 @@
 <?php
 include("../../connection/db.php");
 
-$timezone = date_default_timezone_get();
-date_default_timezone_set($timezone);
-$current_timestamp = time();
+$timestamp = current_time();
+$sender_id = $_SESSION['id'];
+$forward_id = $_POST['forward-to'];
+$file_uploader_id = $_POST['uploader-id'];
+$document_id = $_POST['doc-id'];
 
-$id = $_GET['id']; //document id
-$receiver_id = $_GET['receiver'];
-$sender_id = $_GET['sender'];
-$msg = "has been released";
-$timestamp = date("Y-m-d H:i:s",$current_timestamp);
+$endorse_reciever_notification_id = makeid();
+$file_uploader_notification_id = makeid();
+$log_id = makeid();
 
-$query_to_received = "UPDATE `document` SET `status` = 'released', `isReceived` = '1', `isSigned` = '1', `isReleased` = '1' WHERE `document`.`id` = '$id'";
+$message = "released";
+$class = "notification-released";
 
-$new_notification_id = makeid();
-$query_new_notifiation = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$new_notification_id','$sender_id','$receiver_id','$msg','$id','notification-released')";
+$query_to_release = "UPDATE `document` SET `status` = 'released', `dateUpdated` = '$timestamp', `isSent` = 1, `isReceived` = 1, `isEndorsed` = 1, `isReleased` = 1, `isReturned` = 0, `isSigned` = 0, `isApproved` = 0 WHERE `id` = '$document_id'";
+$query_release_receiver_notification = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$endorse_reciever_notification_id', '$sender_id', '$forward_id', '$message', '$document_id', '$class')";
+$query_file_uploader_notification = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$file_uploader_notification_id', '$sender_id', '$file_uploader_id', '$message', '$document_id', '$class')";
+$query_new_log = "INSERT INTO `log`(`id`, `documentID`, `date`, `status`, `updatedBy`, `forOffice`) VALUES ('$log_id','$document_id','$timestamp','released','$sender_id', '$forward_id')";
+?>
 
-if(mysqli_query($db, $query_to_received)){
-    if(mysqli_query($db, $query_new_notifiation)){
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-        exit;
+<p>Sender ID: <?php echo $sender_id;?></p>
+<p>Reciever ID: <?php echo $forward_id;?></p>
+<p>Uploader ID: <?php echo $file_uploader_id;?></p>
+<p>Timestamp: <?php echo $timestamp; ?></p>
+
+<?php 
+if(mysqli_query($db, $query_to_release)){
+    if(mysqli_query($db, $query_release_receiver_notification)){
+        if(mysqli_query($db, $query_file_uploader_notification)){
+            if(mysqli_query($db, $query_new_log)){
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit;
+            } else {
+                echo "Log: " . $db->error;
+            }
+        } else {
+            echo "Uploader Notification: " . $db->error;
+        }
+    } else {
+        echo "Reciever Notification: " . $db->error;
     }
+} else {
+    echo "Update: " . $db->error;
 }
 ?>
