@@ -129,10 +129,10 @@ if(!isset($_SESSION['id'])){
                                 <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isReturned']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToReturned">Returned</button>
                                 
                                 <!-- SIGNED -->
-                                <a href="#" class="py-2 px-3 status <?php if($document['isSigned']): echo "active"; endif; ?>">Signed</a>
+                                <a href="./models/update/to-signed.php?doc-id=<?php echo $id;?>&rec-id=<?php echo $sender_id?>" class="py-2 px-3 status <?php if($document['isSigned']): echo "active"; endif; ?>">Signed</a>
                                 
                                 <!-- APPROVED -->
-                                <a href="#" class="py-2 px-3 status <?php if($document['isApproved']): echo "active"; endif; ?>">Approved</a>
+                                <a href="./models/update/to-approve.php?doc-id=<?php echo $id;?>&rec-id=<?php echo $sender_id?>" class="py-2 px-3 status <?php if($document['isApproved']): echo "active"; endif; ?>">Approved</a>
                             </div>
 
                             <?php include("./components/modals/view-document.php") ?>
