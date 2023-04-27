@@ -93,10 +93,11 @@ if(!isset($_SESSION['id'])){
                                 <a href="./models/update/to-sent.php?id=<?php echo $id?>&receiver=<?php echo $receiver_id ?>&sender=<?php echo $sender_id ?>" class="py-2 px-3 status active">Sent</a>
                                 <a href="./models/update/to-received.php?doc-id=<?php echo $id?>&receiver-id=<?php echo $sender_id ?>&sender-id=<?php echo $receiver_id ?>" class="py-2 px-3 status <?php if($document['isReceived']): echo "active"; endif; ?>">Received</a>
                                 <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isForwarded']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToForwarded">
-                                    Forwarded
+                                    Endorsed
                                 </button>
                                 <a href="./models/update/to-signed.php?doc-id=<?php echo $id?>&receiver-id=<?php echo $sender_id ?>&sender-id=<?php echo $login_id ?>" class="py-2 px-3 status <?php if($document['isSigned']): echo "active"; endif; ?>">Signed</a>
                                 <a href="./models/update/to-released.php?id=<?php echo $id?>&receiver=<?php echo $sender_id ?>&sender=<?php echo $login_id ?>" class="py-2 px-3 status <?php if($document['isReleased']): echo "active"; endif; ?>">Released</a>
+                                <a href="./models/update/to-approve.php?doc-id=<?php echo $id?>&receiver-id=<?php echo $sender_id ?>&sender-id=<?php echo $login_id ?>" class="py-2 px-3 status <?php if($document['isApproved']): echo "active"; endif; ?>">Approved</a>
                             </div>
                             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewDocumentModal">
                                 View Document
@@ -116,7 +117,8 @@ if(!isset($_SESSION['id'])){
                                     </div>
                                     <div class="modal-body">
                                         <?php if(pathinfo($document['fileName'], PATHINFO_EXTENSION) == "pdf"){ ?>
-                                            <iframe src="./ViewerJs/#../../storage/uploads/<?php echo $document['fileName'] ?>" width='100%' height='300'></iframe>
+                                            <!--<iframe src="./ViewerJs/#../../storage/uploads/<?php //echo $document['fileName'] ?>" width='100%' height='300'></iframe>-->
+                                            <iframe src="./storage/uploads/<?php echo $document['fileName'] ?>" width='100%' height='300'></iframe>
                                         <?php } elseif(pathinfo($document['fileName'], PATHINFO_EXTENSION) == "docx" || pathinfo($document['fileName'], PATHINFO_EXTENSION) == "doc"){ ?>
                                             <iframe src="./models/read/doc.php?file=<?php echo $document['fileName']?>" width="100%" height='300' ></iframe>
                                         <?php }?>
