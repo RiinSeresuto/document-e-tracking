@@ -7,7 +7,7 @@
 >
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="GET" action="./models/update/to-forward.php">
+            <form method="POST" action="./models/update/to-forward.php">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="statusToForwardedLabel">Forward to</h1>
                     <button
@@ -18,17 +18,17 @@
                     ></button>
                 </div>
                 <div class="modal-body">
-                    <label for="office" class="form-label">Office</label>
-                    <select name="office" id="office" class="form-select">
+                    <label for="forward-to" class="form-label">Office</label>
+                    <select name="forward-to" id="forward-to" class="form-select">
                         <option selected disabled></option>
                         <?php foreach($all_offices as $office): ?>
-                        <option value="<?php echo $office['office'] ?>">
+                        <option value="<?php echo $office['id'] ?>">
                             <?php echo $office['office'] ?>
                         </option>
                         <?php endforeach; ?>
                     </select>
-                    <input type="hidden" name="notification-to" value="<?php echo $sender_id ?>" />
-                    <input type="hidden" name="document-id" value="<?php echo $id ?>" />
+                    <input type="hidden" name="doc-id" value="<?php echo $id; ?>">
+                    <input type="hidden" name="uploader-id" value="<?php echo $sender_id; ?>">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

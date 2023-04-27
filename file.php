@@ -3,7 +3,7 @@ $page_title = "File";
 
 include("./connection/db.php");
 
-$query_get_all_offices = "SELECT `office`, COUNT(*) FROM `users` GROUP BY `office`";
+$query_get_all_offices = "SELECT * FROM `users`";
 $result_get_all_offices = mysqli_query($db, $query_get_all_offices);
 $all_offices = mysqli_fetch_all($result_get_all_offices, MYSQLI_ASSOC);
 

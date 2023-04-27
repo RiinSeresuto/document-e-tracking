@@ -1,39 +1,47 @@
 <?php
 include("../../connection/db.php");
-/*
-$forward_office = $_POST['office'];
 
-$query_to_forward = "UPDATE `document` SET `status` = 'forwarded', `office` = '$forward_office', `isReceived` = '1', `isForwarded` = '1', `isSigned` = '0', `isReleased` = '0' WHERE `document`.`id` = '$id'";
+$timestamp = current_time();
+$sender_id = $_SESSION['id'];
+$forward_id = $_POST['forward-to'];
+$file_uploader_id = $_POST['uploader-id'];
+$document_id = $_POST['doc-id'];
 
-$receiver_notification_id = $sender_id;
-$sender_notification_id = $_SESSION['id'];
-$msg = "is forwarded to";
-$new_notification_id = makeid();
-$query_new_notifiation = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$new_notification_id','$sender_notification_id','$receiver_notification_id','$msg','$id','notification-forwarded')";
+$endorse_reciever_notification_id = makeid();
+$file_uploader_notification_id = makeid();
+$log_id = makeid();
 
-if(mysqli_query($db, $query_to_forward)){
-    mysqli_query($db, $query_new_notifiation);
-}
-*/
-$id = $_GET['document-id'];
+$message = "endorsed";
+$class = "notification-endorsed";
 
-$forward_office = $_GET['office'];
-$receiver_notification_id = $_GET['notification-to'];
-$sender_notification_id = $_SESSION['id'];
-$new_notification_id = makeid();
-$msg = "is forwarded to";
+$query_to_endorse = "UPDATE `document` SET `status` = 'endorsed', `dateUpdated` = '$timestamp', `isSent` = 1, `isReceived` = 1, `isEndorsed` = 1, `isReleased` = 0, `isReturned` = 0, `isSigned` = 0, `isApproved` = 0 WHERE `id` = '$document_id'";
+$query_endorse_receiver_notification = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$endorse_reciever_notification_id', '$sender_id', '$forward_id', '$message', '$document_id', '$class')";
+$query_file_uploader_notification = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$file_uploader_notification_id', '$sender_id', '$file_uploader_id', '$message', '$document_id', '$class')";
+$query_new_log = "INSERT INTO `log`(`id`, `documentID`, `date`, `status`, `updatedBy`, `forOffice`) VALUES ('$log_id','$document_id','$timestamp','endorsed','$sender_id', '$forward_id')";
+?>
 
-$query_to_forward = "UPDATE `document` SET `status` = 'forwarded', `office` = '$forward_office', `isReceived` = '1', `isForwarded` = '1', `isSigned` = '0', `isReleased` = '0', `isApproved` = '0' WHERE `document`.`id` = '$id'";
-$query_new_notifiation = "INSERT INTO `notification`(`id`, `sender`, `receiver`, `message`, `docID`, `class`) VALUES ('$new_notification_id','$sender_notification_id','$receiver_notification_id','$msg','$id','notification-forwarded')";
+<p>Sender ID: <?php echo $sender_id;?></p>
+<p>Reciever ID: <?php echo $forward_id;?></p>
+<p>Uploader ID: <?php echo $file_uploader_id;?></p>
+<p>Timestamp: <?php echo $timestamp; ?></p>
 
-if(mysqli_query($db, $query_to_forward)){
-    if(mysqli_query($db, $query_new_notifiation)){
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-        exit;
+<?php
+if(mysqli_query($db, $query_to_endorse)){
+    if(mysqli_query($db, $query_endorse_receiver_notification)){
+        if(mysqli_query($db, $query_file_uploader_notification)){
+            if(mysqli_query($db, $query_new_log)){
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit;
+            } else {
+                echo "Log: " . $db->error;
+            }
+        } else {
+            echo "Uploader Notification: " . $db->error;
+        }
     } else {
-        echo "notification : " . $db->error;
+        echo "Reciever Notification: " . $db->error;
     }
 } else {
-    echo"update: " . $db->error;
+    echo "Update: " . $db->error;
 }
 ?>
