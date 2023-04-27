@@ -9,7 +9,7 @@ if(!isset($_SESSION['id'])){
 } else {
     $user_id = $_SESSION['id'];
     
-    $query_get_notification = "SELECT `notification`.`id` as 'id', `notification`.`message`, `notification`.`class`, `users`.`firstName`, `users`.`lastName`, `document`.`fileName`, `document`.`office` FROM `notification` JOIN `users` ON `notification`.`sender` = `users`.`id` JOIN `document` ON `notification`.`docID` = `document`.`id` WHERE `receiver` = '$user_id' ORDER BY `notification`.`date` DESC";
+    $query_get_notification = "SELECT `notification`.`id` as 'id', `notification`.`message`, `notification`.`class`, `document`.`fileName` FROM `notification` JOIN `users` ON `notification`.`sender` = `users`.`id` JOIN `document` ON `notification`.`docID` = `document`.`id` WHERE `receiver` = '$user_id' ORDER BY `notification`.`date` DESC";
     $result_get_notification = mysqli_query($db, $query_get_notification);
     $all_notifications = mysqli_fetch_all($result_get_notification, MYSQLI_ASSOC);
 }

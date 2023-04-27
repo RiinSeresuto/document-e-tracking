@@ -99,7 +99,7 @@ main {
   border: 1px solid #ccc;
 }
 .add-file .timeline {
-  width: 70%;
+  width: 100%;
   position: relative;
 }
 .add-file .timeline .line {

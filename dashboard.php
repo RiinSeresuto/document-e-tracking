@@ -7,7 +7,7 @@ if(!isset($_SESSION['id'])){
     header("Location: ./signin.php");
     exit;
 } else {
-    $query_all_documents = "SELECT * FROM `document`";
+    $query_all_documents = "SELECT `document`.*, `users`.`office` as office FROM `document` JOIN `users` ON `document`.`forID` = `users`.`id`";
     $result_all_documents = mysqli_query($db, $query_all_documents);
     $all_documents = mysqli_fetch_all($result_all_documents, MYSQLI_ASSOC);
 
@@ -19,7 +19,8 @@ if(!isset($_SESSION['id'])){
 
     $query_count_recieved_document = "SELECT * from `document` WHERE `isSent` = 1 AND `isReceived` = 1 AND `isSigned` = 0 AND `isReleased` = 0";
     $result_count_recieved_document = mysqli_query($db, $query_count_recieved_document);
-    //print_r($count_incoming_document);
+    
+    //print_r($all_documents);
 }
 ?>
 
@@ -77,7 +78,6 @@ if(!isset($_SESSION['id'])){
                             <th scope="col">Status</th>
                             <th scope="col">Office</th>
                             <th scope="col">Date Submitted</th>
-                            <th scope="col">Date Recieved</th>
                             <th scope="col">File</th>
                         </tr>
                     </thead>
@@ -91,11 +91,6 @@ if(!isset($_SESSION['id'])){
                                 <td><?php 
                                     if($document['dateSent'] != ""):
                                         echo date('F d, Y', strtotime($document['dateSent']));
-                                    endif;
-                                ?></td>
-                                <td><?php 
-                                    if($document['dateReceived'] != ""):
-                                        echo date('F d, Y', strtotime($document['dateReceived']));
                                     endif;
                                 ?></td>
                                 <td>

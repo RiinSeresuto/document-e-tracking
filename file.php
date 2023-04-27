@@ -22,13 +22,19 @@ if(!isset($_SESSION['id'])){
     $sender_id = $document['fromID'];
     $receiver_id = $document['forID'];
 
-    $query_sender = "SELECT `firstName`, `lastName` FROM `users` WHERE `id` = '$sender_id'";
+    $query_sender = "SELECT `position`, `office` FROM `users` WHERE `id` = '$sender_id'";
     $result_sender = mysqli_query($db, $query_sender);
     $sender = mysqli_fetch_assoc($result_sender);
 
-    $query_receiver = "SELECT `firstName`, `lastName` FROM `users` WHERE `id` = '$receiver_id'";
+    $query_receiver = "SELECT `position`, `office` FROM `users` WHERE `id` = '$receiver_id'";
     $result_receiver = mysqli_query($db, $query_receiver);
     $receiver = mysqli_fetch_assoc($result_receiver);
+
+    $query_logs = "SELECT `log`.`date`, `log`.`status`, `sender`.`office` as sender, `receiver`.`office` as receiver FROM `log` JOIN `users` AS sender ON `sender`.`id` = `log`.`updatedBy` JOIN `users` as receiver ON `receiver`.`id` = `log`.`forOffice` WHERE `log`.`documentID` = '$id' ORDER BY  `log`.`date` DESC";
+    $result_logs = mysqli_query($db, $query_logs);
+    $logs = mysqli_fetch_all($result_logs, MYSQLI_ASSOC);
+
+    print_r($logs);
 }
 ?>
 
@@ -65,23 +71,40 @@ if(!isset($_SESSION['id'])){
                     <section class="mb-5">
                         <div class="d-flex justify-content-between align-items-center">
                             <h2>File Information</h2>
-                            <a href="./storage/uploads/<?php echo$document['fileName'] ?>" class="btn btn-info">Download File</a>
+
+                            <div class="d-flex">
+                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewDocumentModal">
+                                    View Document
+                                </button>
+                                <a href="./storage/uploads/<?php echo$document['fileName'] ?>" class="btn btn-info ms-3">Download File</a>
+                            </div>
                         </div>
                         <div class="file-info p-4">
                             <p class="mb-2"><strong>Filename:</strong> <?php echo $document['fileName'] ?></p>
-                            <p class="mb-2"><strong>Status:</strong> <?php echo $document['status'] ?></p>
-                            <p class="mb-2"><strong>Date Sent:</strong> <?php
-                                if($document['dateSent'] != ""):
-                                    echo date('F d, Y', strtotime($document['dateSent']));
-                                endif;
-                            ?> </p>
-                            <p class="mb-2"><strong>Date Received:</strong> <?php 
-                                if($document['dateReceived'] != ""):
-                                    echo date('F d, Y', strtotime($document['dateReceived']));
-                                endif;
-                             ?></p>
-                            <p class="mb-2"><strong>To:</strong> <?php echo $receiver['firstName'] . " " . $receiver['lastName'] ?></p>
-                            <p class="m-0"><strong>From:</strong> <?php echo $sender['firstName'] . " " . $sender['lastName'] ?></p>
+                            <p class="mb-4"><strong>Status:</strong> <?php echo $document['status'] ?></p>
+
+                            <h6>UPDATES </h6>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Update</th>
+                                        <th scope="col">From</th>
+                                        <th scope="col">To</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($logs as $log): ?>
+                                        <tr>
+                                            <td><?php echo date('F d, Y', strtotime($log['date'])); ?></td>
+                                            <td><?php echo $log['status'] ?></td>
+                                            <td><?php echo $log['sender'] ?></td>
+                                            <td><?php echo $log['receiver'] ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
                     </section>
 
@@ -90,76 +113,34 @@ if(!isset($_SESSION['id'])){
                         <div class="actions d-flex justify-content-between align-items-center">
                             <div class="timeline d-flex justify-content-between align-items-center">
                                 <div class="line"></div>
-                                <a href="./models/update/to-sent.php?id=<?php echo $id?>&receiver=<?php echo $receiver_id ?>&sender=<?php echo $sender_id ?>" class="py-2 px-3 status active">Sent</a>
-                                <a href="./models/update/to-received.php?doc-id=<?php echo $id?>&receiver-id=<?php echo $sender_id ?>&sender-id=<?php echo $receiver_id ?>" class="py-2 px-3 status <?php if($document['isReceived']): echo "active"; endif; ?>">Received</a>
-                                <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isForwarded']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToForwarded">
-                                    Endorsed
-                                </button>
-                                <a href="./models/update/to-signed.php?doc-id=<?php echo $id?>&receiver-id=<?php echo $sender_id ?>&sender-id=<?php echo $login_id ?>" class="py-2 px-3 status <?php if($document['isSigned']): echo "active"; endif; ?>">Signed</a>
-                                <a href="./models/update/to-released.php?id=<?php echo $id?>&receiver=<?php echo $sender_id ?>&sender=<?php echo $login_id ?>" class="py-2 px-3 status <?php if($document['isReleased']): echo "active"; endif; ?>">Released</a>
-                                <a href="./models/update/to-approve.php?doc-id=<?php echo $id?>&receiver-id=<?php echo $sender_id ?>&sender-id=<?php echo $login_id ?>" class="py-2 px-3 status <?php if($document['isApproved']): echo "active"; endif; ?>">Approved</a>
+                                <!-- SENT -->
+                                <a href="#" class="py-2 px-3 status active">Sent</a>
+                                
+                                <!-- RECEIVED -->
+                                <a href="#" class="py-2 px-3 status <?php if($document['isReceived']): echo "active"; endif; ?>">Received</a>
+                                
+                                <!-- ENDORSED -->
+                                <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isEndorsed']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToForwarded">Endorsed</button>
+                                
+                                <!-- RELEASED -->
+                                <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isReleased']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToForwarded">Released</button>
+                                
+                                <!-- RETURNED -->
+                                <button type="button" class="btn btn-primary py-2 px-3 status <?php if($document['isReleased']): echo "active"; endif; ?>" data-bs-toggle="modal" data-bs-target="#statusToForwarded">Returned</button>
+                                
+                                <!-- SIGNED -->
+                                <a href="#" class="py-2 px-3 status <?php if($document['isSigned']): echo "active"; endif; ?>">Signed</a>
+                                
+                                <!-- APPROVED -->
+                                <a href="#" class="py-2 px-3 status <?php if($document['isApproved']): echo "active"; endif; ?>">Approved</a>
                             </div>
-                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewDocumentModal">
-                                View Document
-                            </button>
 
-                            <div class="modal fade" id="viewDocumentModal" tabindex="-1" aria-labelledby="viewDocumentLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="viewDocumentLabel">
-                                            Document
-                                            <?php if(pathinfo($document['fileName'], PATHINFO_EXTENSION) == "docx" || pathinfo($document['fileName'], PATHINFO_EXTENSION) == "doc"): ?>
-                                            Text Content
-                                            <?php endif;?>
-                                        </h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <?php if(pathinfo($document['fileName'], PATHINFO_EXTENSION) == "pdf"){ ?>
-                                            <!--<iframe src="./ViewerJs/#../../storage/uploads/<?php //echo $document['fileName'] ?>" width='100%' height='300'></iframe>-->
-                                            <iframe src="./storage/uploads/<?php echo $document['fileName'] ?>" width='100%' height='300'></iframe>
-                                        <?php } elseif(pathinfo($document['fileName'], PATHINFO_EXTENSION) == "docx" || pathinfo($document['fileName'], PATHINFO_EXTENSION) == "doc"){ ?>
-                                            <iframe src="./models/read/doc.php?file=<?php echo $document['fileName']?>" width="100%" height='300' ></iframe>
-                                        <?php }?>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-info" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <?php include("./components/modals/view-document.php") ?>
                         </div>
                     </section>
                 </div>
             </main>
-            <div class="modal fade" id="statusToForwarded" tabindex="-1" aria-labelledby="statusToForwardedLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form method="GET" action="./models/update/to-forward.php">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="statusToForwardedLabel">Forward to</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <label for="office" class="form-label">Office</label>
-                                <select name="office" id="office" class="form-select">
-                                    <option selected disabled></option>
-                                    <?php foreach($all_offices as $office): ?>
-                                        <option value="<?php echo $office['office'] ?>"><?php echo $office['office'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <input type="hidden" name="notification-to" value="<?php echo $sender_id ?>">
-                                <input type="hidden" name="document-id" value="<?php echo $id ?>">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button name="submit-forward" type="submit" class="btn btn-info" value="true">Update</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <?php include("./components/modals/endorsed-to.php"); ?>
         </div>
         <script src="./assets/js/bootstrap.bundle.min.js"></script>
     </body>

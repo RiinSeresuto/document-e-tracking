@@ -8,7 +8,7 @@ if(!isset($_SESSION['id'])){
     header("Location: ./signin.php");
     exit;
 } else {
-    $query_get_all_users = "SELECT `id`, `firstName`, `lastName`, `position`, `office` FROM `users` ORDER BY `lastName`";
+    $query_get_all_users = "SELECT `id`, `position`, `office` FROM `users`";
     $result_get_all_users = mysqli_query($db, $query_get_all_users);
     $all_users = mysqli_fetch_all($result_get_all_users, MYSQLI_ASSOC);
 
@@ -29,19 +29,29 @@ if(!isset($_SESSION['id'])){
 
         $upload_id = makeid();
         $notification_id = makeid();
+        $log_id = makeid();
         $type = $_POST['type'];
         $forwardto = $_POST['forward-to'];
         $from = $_SESSION['id'];
-        $office = $_POST['office'];
         $notification_msg = "document has been uploaded by";
 
-        $query_upload_file = "INSERT INTO `document`(`id`, `type`, `fileName`, `forID`, `fromID`, `office`) VALUES ('$upload_id','$type','$newFileName','$forwardto','$from', '$office')";
+        $query_upload_file = "INSERT INTO `document`(`id`, `type`, `fileName`, `forID`, `fromID`) VALUES ('$upload_id','$type','$newFileName','$forwardto','$from')";
         $query_add_notofication = "INSERT INTO `notification`(`id`, `sender`, `receiver`,`docID`, `class`, `message`) VALUES ('$notification_id','$from','$forwardto','$upload_id','notification-sent','$notification_msg')";
-        
+        $query_add_log = "INSERT INTO `log`(`id`, `documentID`, `status`, `updatedBy`, `forOffice`) VALUES ('$log_id', '$upload_id', 'sent', '$from', '$forwardto')";
+
+
         if(mysqli_query($db, $query_upload_file)){
             if(mysqli_query($db, $query_add_notofication)){
-                $uploaded = "File Uploaded";
+                if(mysqli_query($db, $query_add_log)){
+                    $uploaded = "File Uploaded";
+                } else {
+                    echo "Log not saved: " . $db->error;
+                }
+            } else {
+                echo "Notification not sent: " . $db->error;
             }
+        } else {
+            echo "Document record not saved: " . $db->error;
         }
     }
 }
@@ -90,6 +100,7 @@ if(!isset($_SESSION['id'])){
                             <option value="Work and Financial Plans">
                                 Work and Financial Plans
                             </option>
+                            <option value="Others">Others</option>
                         </select>
                     </div>
 
@@ -100,17 +111,8 @@ if(!isset($_SESSION['id'])){
                                 <option selected disabled></option>
                                 <?php foreach($all_users as $user): ?>
                                     <?php if($user['id'] != $_SESSION['id']): ?>
-                                        <option value="<?php echo $user['id'] ?>"><?php echo $user['firstName'] . " " . $user['lastName'] . " | " . $user['position']?></option>
+                                        <option value="<?php echo $user['id'] ?>"><?php echo $user['office']?></option>
                                     <?php endif; ?>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col mb-4">
-                            <label for="office" class="form-label">Office</label>
-                            <select name="office" id="office" class="form-select">
-                                <option selected disabled></option>
-                                <?php foreach($all_offices as $office): ?>
-                                    <option value="<?php echo $office['office'] ?>"><?php echo $office['office']?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
