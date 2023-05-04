@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 21, 2023 at 07:09 AM
+-- Generation Time: May 04, 2023 at 04:01 AM
 -- Server version: 5.7.33
 -- PHP Version: 7.4.19
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `e-tracking`
 --
-CREATE DATABASE IF NOT EXISTS `e-tracking` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `e-tracking`;
 
 -- --------------------------------------------------------
 
@@ -29,7 +27,6 @@ USE `e-tracking`;
 -- Table structure for table `document`
 --
 
-DROP TABLE IF EXISTS `document`;
 CREATE TABLE `document` (
   `id` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
@@ -38,14 +35,26 @@ CREATE TABLE `document` (
   `fromID` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'sent',
   `dateSent` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `dateReceived` timestamp NULL DEFAULT NULL,
   `dateUpdated` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `office` varchar(255) NOT NULL,
   `isSent` int(3) NOT NULL DEFAULT '1',
   `isReceived` int(3) NOT NULL DEFAULT '0',
-  `isForwarded` int(3) NOT NULL DEFAULT '0',
   `isSigned` int(3) NOT NULL DEFAULT '0',
   `isReleased` int(3) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `log`
+--
+
+CREATE TABLE `log` (
+  `id` varchar(255) NOT NULL,
+  `documentID` varchar(255) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(50) NOT NULL,
+  `updatedBy` varchar(255) NOT NULL,
+  `forOffice` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -54,7 +63,6 @@ CREATE TABLE `document` (
 -- Table structure for table `notification`
 --
 
-DROP TABLE IF EXISTS `notification`;
 CREATE TABLE `notification` (
   `id` varchar(255) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -72,12 +80,9 @@ CREATE TABLE `notification` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `firstName` varchar(255) NOT NULL,
-  `lastName` varchar(255) NOT NULL,
   `position` varchar(255) NOT NULL,
   `office` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -92,6 +97,12 @@ CREATE TABLE `users` (
 -- Indexes for table `document`
 --
 ALTER TABLE `document`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `log`
+--
+ALTER TABLE `log`
   ADD PRIMARY KEY (`id`);
 
 --
