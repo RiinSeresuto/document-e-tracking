@@ -173,7 +173,8 @@ main {
             }
         }
 
-        .notification-sent {
+        .notification-sent,
+        .notification-endorsed {
             background-color: #ffe0b2;
 
             .notification-message {
@@ -221,7 +222,7 @@ main {
             }
         }
 
-        .notification-forwarded {
+        .notification-returned {
             background-color: #f5f5f5;
 
             .notification-message {
@@ -230,6 +231,18 @@ main {
 
             .notification-icon {
                 color: #bdbdbd;
+            }
+        }
+
+        .notification-approved {
+            background-color: #ffb2f9;
+
+            .notification-message {
+                color: #d300e6;
+            }
+
+            .notification-icon {
+                color: #ff00ea;
             }
         }
     }

@@ -33,7 +33,7 @@ if(!isset($_SESSION['id'])){
         $type = $_POST['type'];
         $forwardto = $_POST['forward-to'];
         $from = $_SESSION['id'];
-        $notification_msg = "document has been uploaded by";
+        $notification_msg = "document uploaded";
 
         $query_upload_file = "INSERT INTO `document`(`id`, `type`, `fileName`, `forID`, `fromID`) VALUES ('$upload_id','$type','$newFileName','$forwardto','$from')";
         $query_add_notofication = "INSERT INTO `notification`(`id`, `sender`, `receiver`,`docID`, `class`, `message`) VALUES ('$notification_id','$from','$forwardto','$upload_id','notification-sent','$notification_msg')";

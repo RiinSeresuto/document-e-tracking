@@ -47,24 +47,17 @@ if(!isset($_SESSION['id'])){
                                         include("./assets/img/icons/check.php");
                                     } elseif ($notification['class'] === "notification-received"){
                                         include("./assets/img/icons/mail-check.php");
-                                    } elseif ($notification['class'] === "notification-forwarded"){
+                                    } elseif ($notification['class'] === "notification-endorsed"){
                                         include("./assets/img/icons/mail-sent.php"); 
-                                    }
+                                    } elseif ($notification['class'] === "notification-returned"){
+                                        include("./assets/img/icons/returned-icon.php"); 
+                                    } elseif ($notification['class'] === "notification-approved"){
+                                        include("./assets/img/icons/approved.php"); 
+                                    } 
                                 ?>
                             </div>
-                            <div class="notification-message"><?php
-                                if($notification['class'] === "notification-sent"){
-                                    echo $notification['fileName'] . " " . $notification['message'] . " " . $notification['firstName'] . " " . $notification['lastName'];
-                                } elseif ($notification['class'] === "notification-signed"){
-                                    echo $notification['fileName'] . " " . $notification['message'] . " by " . $notification['firstName'] . " " . $notification['lastName'];
-                                } elseif ($notification['class'] === "notification-released"){
-                                    echo $notification['fileName'] . " " . $notification['message'];
-                                } elseif ($notification['class'] === "notification-received"){
-                                    echo $notification['fileName'] . " " . $notification['message'] . " by " . $notification['firstName'] . " " . $notification['lastName'];
-                                } elseif ($notification['class'] === "notification-forwarded"){
-                                    echo $notification['fileName'] . " " . $notification['message'] . " " . $notification['office'] . " office";
-                                }
-                            ?>
+                            <div class="notification-message">
+                                <strong><?php echo $notification['fileName'] . " " . $notification['message']?></strong>
                             </div>
                             <div class="notification-delete">
                                 <a href="./models/delete/notification.php?id=<?php echo $notification['id'] ?>">

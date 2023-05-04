@@ -138,13 +138,16 @@ main {
   width: 30px;
   height: 30px;
 }
-.notification-window .notification-list .notification-sent {
+.notification-window .notification-list .notification-sent,
+.notification-window .notification-list .notification-endorsed {
   background-color: #ffe0b2;
 }
-.notification-window .notification-list .notification-sent .notification-message {
+.notification-window .notification-list .notification-sent .notification-message,
+.notification-window .notification-list .notification-endorsed .notification-message {
   color: #e65100;
 }
-.notification-window .notification-list .notification-sent .notification-icon {
+.notification-window .notification-list .notification-sent .notification-icon,
+.notification-window .notification-list .notification-endorsed .notification-icon {
   color: #ff9800;
 }
 .notification-window .notification-list .notification-signed {
@@ -174,14 +177,23 @@ main {
 .notification-window .notification-list .notification-received .notification-icon {
   color: #bdbdbd;
 }
-.notification-window .notification-list .notification-forwarded {
+.notification-window .notification-list .notification-returned {
   background-color: #f5f5f5;
 }
-.notification-window .notification-list .notification-forwarded .notification-message {
+.notification-window .notification-list .notification-returned .notification-message {
   color: #616161;
 }
-.notification-window .notification-list .notification-forwarded .notification-icon {
+.notification-window .notification-list .notification-returned .notification-icon {
   color: #bdbdbd;
+}
+.notification-window .notification-list .notification-approved {
+  background-color: #ffb2f9;
+}
+.notification-window .notification-list .notification-approved .notification-message {
+  color: #d300e6;
+}
+.notification-window .notification-list .notification-approved .notification-icon {
+  color: #ff00ea;
 }
 
 .profile .profile-info {
